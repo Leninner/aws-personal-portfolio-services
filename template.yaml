@@ -11,7 +11,7 @@ Globals:
     Runtime: nodejs18.x
 
 Resources:
-  GetProjectsFunction:
+  ManageProjectsApi:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/
@@ -19,11 +19,27 @@ Resources:
       Architectures:
         - x86_64
       Events:
-        PortfolioApi:
+        GetProjectsApi:
           Type: Api
           Properties:
             Path: /projects
             Method: get
+        PostProjectsApi:
+          Type: Api
+          Properties:
+            Path: /projects
+            Method: post
+        DeleteProjectsApi:
+          Type: Api
+          Properties:
+            Path: /projects
+            Method: delete
+        PutProjectsApi:
+          Type: Api
+          Properties:
+            Path: /projects
+            Method: put
+
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
@@ -31,4 +47,5 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints: 
-        - getProjects.ts
+        - manageProjects.ts
+
