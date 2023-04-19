@@ -29,3 +29,13 @@ warm_containers = "EAGER"
 
 [default.local_start_lambda.parameters]
 warm_containers = "EAGER"
+
+[prod.deploy.parameters]
+stack_name = "personal-portfolio-app"
+resolve_s3 = true
+s3_prefix = "personal-portfolio-app"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
