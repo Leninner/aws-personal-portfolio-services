@@ -11,11 +11,12 @@ Globals:
     Runtime: nodejs18.x
 
 Resources:
-  ManageProjectsApi:
+  ManageProjectsApiFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: manage-projects
       CodeUri: src/
-      Handler: getProjects.lambdaHandler
+      Handler: manageProjects.handler
       Architectures:
         - x86_64
       Events:
@@ -48,4 +49,27 @@ Resources:
         Sourcemap: true
         EntryPoints: 
         - manageProjects.ts
+
+  ProjectsDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: projects
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  LambdaDynamoDbWriteConnector:
+    Type: AWS::Serverless::Connector
+    Properties:
+      Source:
+        Id: ManageProjectsApiFunction
+      Destination:
+        Id: ProjectsDynamoDBTable
+      Permissions:
+        - Write
+        - Read
 
